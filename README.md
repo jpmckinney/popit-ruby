@@ -12,19 +12,19 @@ A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows yo
 
 ## API Examples
 
-Require the PopIt gem:
+First, require the PopIt gem:
 
 ```ruby
 require 'popit'
 ```
 
-Create an API client:
+Then, create an API client for PopIt:
 
 ```ruby
 api = PopIt.new :instance_name => 'demo'
 ```
 
-You can pass the options:
+You can pass these options to `PopIt.new`:
 
 * `:instance_name` the PopIt instance, usually the first part of the domain name
 * `:host_name` the PopIt API's host name – defaults to "popit.mysociety.org"
@@ -33,7 +33,7 @@ You can pass the options:
 * `:user` a user name – if blank, the API will be read-only
 * `:password` the user's password
 
-For brevity, we only show examples for `person` items, but you use the same code to operate on organisations and positions by substituting `organisation` or `position` for `person`.
+For brevity, we only show examples below for `person` items, but you can use the same code to operate on organisations and positions by substituting `organisation` or `position` for `person`.
 
 More documentation at [RubyDoc.info](http://rdoc.info/gems/popit/PopIt).
 
@@ -53,11 +53,13 @@ response = api.person('47cc67093475061e3d95369d').get
 p response['result']
 ```
 
-You can search...
+You can also search for...
 
 * people by slug, name or summary
 * organisations by slug or name
 * positions by title, person or organisation
+
+For example:
 
 ```ruby
 response = api.person.get :name => 'John Doe'
@@ -74,30 +76,30 @@ id = response['result']['_id']
 ### Update
 
 ```ruby
-response = api.person('47cc67093475061e3d95369d').put :name => 'Jane Doe'
+response = api.person(id).put :name => 'Jane Doe'
 p response['result']
 ```
 
 ### Delete
 
 ```ruby
-success = api.person('47cc67093475061e3d95369d').delete
+success = api.person(id).delete
 ```
 
 ## Error Handling
 
-If you:
+If you attempt to:
 
-* attempt to read an item that doesn't exist
-* attempt to create, update or delete an item without authenticating
-* attempt to operate on something other than people, organisations and positions
+* read an item that doesn't exist
+* create, update or delete an item without authenticating
+* operate on something other than people, organisations and positions
 
-you will raise a `PopIt::Error` exception. The exception's message will be the error message from the PopIt API.
+you will raise a `PopIt::Error` exception. The exception's message will be the same as from the PopIt API.
 
 ```ruby
 require 'popit'
 api = PopIt.new :instance_name => 'demo'
-api.person.get 'foo' # raises PopIt::Error
+api.person.get 'foo' # raises PopIt::Error with {"error":"page not found"}
 ```
 
 ## Running Tests
