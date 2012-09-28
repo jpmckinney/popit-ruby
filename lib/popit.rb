@@ -3,6 +3,20 @@ require 'yajl'
 
 # A Ruby wrapper for the PopIt API.
 #
+# Instead of writing the path to an API endpoint, you can use method chaining.
+# For example:
+#
+#     require 'popit'
+#     api = PopIt.new :instance_name => 'demo'
+#     api.get 'person/john-doe'
+#
+# can be written as:
+#
+#     api.person('john-doe').get
+#
+# All methods and arguments between `api` and the HTTP method - in this case,
+# `get` - become parts of the path.
+#
 # @see https://github.com/mysociety/popit/blob/master/lib/apps/api/api_v1.js
 class PopIt
   class Error < StandardError; end
@@ -33,22 +47,38 @@ class PopIt
     @password      = opts[:password]
   end
 
-  def base_uri
-    "http://#{instance_name}.#{host_name}:#{port}/api/#{version}"
-  end
-
+  # Send a GET request.
+  #
+  # @param [String] path a path with no leading slash
+  # @param [Hash] opts key-value pairs for the query string
+  # @return the JSON response from the server
   def get(path, opts = {})
     request :get, path, opts
   end
 
+  # Send a POST request.
+  #
+  # @param [String] path a path with no leading slash
+  # @param [Hash] opts key-value pairs for the message body
+  # @return the JSON response from the server
   def post(path, opts = {})
     request :post, path, opts
   end
 
+  # Send a PUT request.
+  #
+  # @param [String] path a path with no leading slash
+  # @param [Hash] opts key-value pairs for the message body
+  # @return [nil] nothing
   def put(path, opts = {})
     request :put, path, opts
   end
 
+  # Send a DELETE request.
+  #
+  # @param [String] path a path with no leading slash
+  # @param [Hash] opts key-value pairs for the query string
+  # @return [Hash] an empty hash
   def delete(path, opts = {})
     request :delete, path, opts
   end
@@ -56,7 +86,7 @@ class PopIt
 private
 
   def request(http_method, path, opts = {})
-    path = "#{base_uri}/#{path}"
+    path = "http://#{instance_name}.#{host_name}:#{port}/api/#{version}/#{path}"
 
     response = case http_method
     when :get
