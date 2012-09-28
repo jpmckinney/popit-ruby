@@ -23,14 +23,25 @@ class PopIt
 
   include HTTParty
 
-  attr_reader :instance_name, :host_name, :port, :version, :username, :password
+  # The instance name.
+  attr_reader :instance_name
+  # The PopIt API's host name, eg "popit.mysociety.org".
+  attr_reader :host_name
+  # The PopIt API's port, eg 80
+  attr_reader :port
+  # The PopIt API version, eg "v1"
+  attr_reader :version
+  # A user name.
+  attr_reader :username
+  # The user's password.
+  attr_reader :password
 
   # Initializes a PopIt API client.
   #
   # @param [Hash] opts the API client's configuration
   # @option opts [String] :instance_name the instance name
   # @option opts [String] :host_name the PopIt API's host name, eg "popit.mysociety.org"
-  # @option opts [String] :post the PopIt API's port, eg "80"
+  # @option opts [String] :post the PopIt API's port, eg 80
   # @option opts [String] :version the PopIt API version, eg "v1"
   # @option opts [String] :user a user name
   # @option opts [String] :password the user's password
@@ -47,7 +58,7 @@ class PopIt
     @password      = opts[:password]
   end
 
-  # Send a GET request.
+  # Sends a GET request.
   #
   # @param [String] path a path with no leading slash
   # @param [Hash] opts key-value pairs for the query string
@@ -56,7 +67,7 @@ class PopIt
     request :get, path, opts
   end
 
-  # Send a POST request.
+  # Sends a POST request.
   #
   # @param [String] path a path with no leading slash
   # @param [Hash] opts key-value pairs for the message body
@@ -65,7 +76,7 @@ class PopIt
     request :post, path, opts
   end
 
-  # Send a PUT request.
+  # Sends a PUT request.
   #
   # @param [String] path a path with no leading slash
   # @param [Hash] opts key-value pairs for the message body
@@ -74,7 +85,7 @@ class PopIt
     request :put, path, opts
   end
 
-  # Send a DELETE request.
+  # Sends a DELETE request.
   #
   # @param [String] path a path with no leading slash
   # @param [Hash] opts key-value pairs for the query string
