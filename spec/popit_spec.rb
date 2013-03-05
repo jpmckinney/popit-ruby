@@ -11,7 +11,7 @@ describe PopIt do
   end
 
   let :authenticated do
-    PopIt.new YAML.load_file(File.expand_path(File.dirname(__FILE__) + '/spec_auth.yml'))
+    PopIt.new credentials
   end
 
   it 'should fail to send a request to a bad instance' do
@@ -26,7 +26,7 @@ describe PopIt do
 
   context 'with a PopIt instance' do
     before :all do
-      @person = authenticated.person.post(:name => 'John Doe', :slug => 'john-doe')['result']
+      @person = unauthenticated.person.get(:name => 'Foo', :slug => 'foo')['results'][0]
     end
 
     let :person do
@@ -49,7 +49,7 @@ describe PopIt do
       end
 
       it 'should get one item by name' do
-        response = unauthenticated.person.get :name => 'John Doe'
+        response = unauthenticated.person.get :name => 'Foo'
         results = response['results']
         results.should be_an(Array)
       end
@@ -57,11 +57,17 @@ describe PopIt do
       it 'should get one item' do
         response = unauthenticated.person(id).get
         result = response['result']
-        result.should == person
+        # PopIt adds fields e.g. __v, _internal, contact_details, images, links,
+        # other_names, personal_details and adds positions_api_url to meta.
+        person.each do |k,v|
+          unless k == 'meta'
+            result[k].should == v
+          end
+        end
       end
 
       it 'should fail to get a non-existent item' do
-        expect { unauthenticated.person('foo').get }.to raise_error(PopIt::Error, '{"error":"page not found"}')
+        expect { unauthenticated.person('bar').get }.to raise_error(PopIt::Error, '{"error":"page not found"}')
       end
 
       it 'should fail to create an item' do
@@ -77,7 +83,7 @@ describe PopIt do
       end
     end
 
-    context 'when authenticated' do
+    context 'when authenticated', :if => credentials? do
       it 'should create an item' do
         response = authenticated.person.post :name => 'John Smith'
         result = response['result']
