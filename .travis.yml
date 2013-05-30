@@ -6,19 +6,26 @@ rvm:
 - 1.9.3
 - 2.0.0
 - ree
+
+before_script:
+  - secret=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in secret`
+  - openssl aes-256-cbc -k "$secret" -in config.xml.enc -d -a -out config.xml
+
 env:
-- secure: ! 'Y983QmQxhpVgD8Y9ETiq/MjvIbCC1lkEoN0ouMcgzGHnEpX89ZvRyWqUY9UL
+  global:
+    - TRAVIS_SECURE_ENV_VARS: true 
+    - secure: ! 'Y983QmQxhpVgD8Y9ETiq/MjvIbCC1lkEoN0ouMcgzGHnEpX89ZvRyWqUY9UL
 
-    iUS5TD9EsV74SasoqLWFnNfH1GwIwROhaXBHENrEvSV3oHOe8kKoBeUn/RDn
+        iUS5TD9EsV74SasoqLWFnNfH1GwIwROhaXBHENrEvSV3oHOe8kKoBeUn/RDn
 
-    TI/iDfw6G4bhkCbvFbaNa/EGboduiX6fO9BW5mDS2IUbKgthT5I='
-- secure: ! 'QzTGJn8FpMnvu2cXVXGdWvOvrkyl+N3xJBl6YBri0EJ3QBafRmkgk3FrjtQp
+        TI/iDfw6G4bhkCbvFbaNa/EGboduiX6fO9BW5mDS2IUbKgthT5I='
+    - secure: ! 'QzTGJn8FpMnvu2cXVXGdWvOvrkyl+N3xJBl6YBri0EJ3QBafRmkgk3FrjtQp
 
-    5HjEUBlRuk5SXj4GHZUDEo7q+TwZZHw7KgozTXqqe5RY1Q2Z+7WWlGHTp+gO
+        5HjEUBlRuk5SXj4GHZUDEo7q+TwZZHw7KgozTXqqe5RY1Q2Z+7WWlGHTp+gO
 
-    VE7FThCQPSQ65fn4BQuT0fSaJyLtK8JS+AkkKPDlWb0VKEabfmQ='
-- secure: ! 'BiKZ0fu581Pe9tP87DMC190icZGtBQiNWmCxNIjsGDdkqpqns46tqStr4lTx
+        VE7FThCQPSQ65fn4BQuT0fSaJyLtK8JS+AkkKPDlWb0VKEabfmQ='
+    - secure: ! 'BiKZ0fu581Pe9tP87DMC190icZGtBQiNWmCxNIjsGDdkqpqns46tqStr4lTx
 
-    PqPdr9CnVoiuKHb8q1ZFsC/8SstbVh/MugYBMOP90VL8dT2bcSnFjKGHBgUy
+        PqPdr9CnVoiuKHb8q1ZFsC/8SstbVh/MugYBMOP90VL8dT2bcSnFjKGHBgUy
 
-    P2ka/cjBYyg9GwNoHnPQGew67wYNJ43wPwpyRFvl1b49qz2VCBw='
+        P2ka/cjBYyg9GwNoHnPQGew67wYNJ43wPwpyRFvl1b49qz2VCBw='
