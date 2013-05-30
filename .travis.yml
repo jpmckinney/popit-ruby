@@ -1,7 +1,24 @@
+---
 language: ruby
 rvm:
-  - 1.8.7
-  - 1.9.2
-  - 1.9.3
-  - 2.0.0
-  - ree
+- 1.8.7
+- 1.9.2
+- 1.9.3
+- 2.0.0
+- ree
+env:
+- secure: ! 'Y983QmQxhpVgD8Y9ETiq/MjvIbCC1lkEoN0ouMcgzGHnEpX89ZvRyWqUY9UL
+
+    iUS5TD9EsV74SasoqLWFnNfH1GwIwROhaXBHENrEvSV3oHOe8kKoBeUn/RDn
+
+    TI/iDfw6G4bhkCbvFbaNa/EGboduiX6fO9BW5mDS2IUbKgthT5I='
+- secure: ! 'QzTGJn8FpMnvu2cXVXGdWvOvrkyl+N3xJBl6YBri0EJ3QBafRmkgk3FrjtQp
+
+    5HjEUBlRuk5SXj4GHZUDEo7q+TwZZHw7KgozTXqqe5RY1Q2Z+7WWlGHTp+gO
+
+    VE7FThCQPSQ65fn4BQuT0fSaJyLtK8JS+AkkKPDlWb0VKEabfmQ='
+- secure: ! 'BiKZ0fu581Pe9tP87DMC190icZGtBQiNWmCxNIjsGDdkqpqns46tqStr4lTx
+
+    PqPdr9CnVoiuKHb8q1ZFsC/8SstbVh/MugYBMOP90VL8dT2bcSnFjKGHBgUy
+
+    P2ka/cjBYyg9GwNoHnPQGew67wYNJ43wPwpyRFvl1b49qz2VCBw='
