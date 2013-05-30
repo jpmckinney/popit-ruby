@@ -42,6 +42,7 @@ describe PopIt do
     end
 
     context 'when unauthenticated' do
+      p ENV['INSTANCE_NAME']
       it 'should get all items' do
         response = unauthenticated.person.get
         results = response['results']
