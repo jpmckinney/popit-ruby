@@ -11,7 +11,11 @@ describe PopIt do
   end
 
   let :authenticated do
-    PopIt.new credentials
+    PopIt.new ({
+      :instance_name => ENV['INSTANCE_NAME'],
+      :user => ENV['USER'],
+      :password => ENV['PASSWORD'],
+    })
   end
 
   it 'should fail to send a request to a bad instance' do
@@ -42,7 +46,6 @@ describe PopIt do
     end
 
     context 'when unauthenticated' do
-      p ENV['INSTANCE_NAME']
       it 'should get all items' do
         response = unauthenticated.person.get
         results = response['results']
@@ -50,6 +53,7 @@ describe PopIt do
       end
 
       it 'should get one item by name' do
+        authenticated.person.post :name => 'Foo'
         response = unauthenticated.person.get :name => 'Foo'
         results = response['results']
         results.should be_an(Array)
@@ -84,7 +88,7 @@ describe PopIt do
       end
     end
 
-    context 'when authenticated', :if => credentials? do
+    context 'when authenticated' do
       it 'should create an item' do
         response = authenticated.person.post :name => 'John Smith'
         result = response['result']

@@ -7,9 +7,9 @@ rvm:
 - 2.0.0
 - ree
 
-#before_script:
-#  - secret=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in secret`
-#  - openssl aes-256-cbc -k "$secret" -in config.xml.enc -d -a -out config.xml
+before_script:
+  - secret=`openssl rsautl -decrypt -inkey ~/.ssh/id_rsa -in secret`
+  - openssl aes-256-cbc -k "$secret" -in config.xml.enc -d -a -out config.xml
 
 env:
   global:
