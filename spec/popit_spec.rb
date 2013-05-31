@@ -67,7 +67,7 @@ describe PopIt do
       end
 
       it 'should fail to get a non-existent item' do
-        expect { unauthenticated.person('bar').get }.to raise_error(PopIt::Error, '{"error":"page not found"}')
+        expect {unauthenticated.person('bar').get}.to raise_error(PopIt::Error, '{"error":"page not found"}')
       end
 
       it 'should fail to create an item' do
@@ -84,23 +84,18 @@ describe PopIt do
     end
 
     context 'when authenticated' do
-      it 'should create an item' do
+      it 'should create, update and delete an item' do
         response = authenticated.person.post :name => 'John Smith'
-        result = response['result']
-        result['name'].should == 'John Smith'
-        authenticated.person(result['_id']).delete # cleanup
-      end
+        id = response['result']['_id']
+        response['result']['name'].should == 'John Smith'
 
-      it 'should update an item' do
-        response = authenticated.person(id).put :name => 'John Smith'
+        response = authenticated.person(id).put :name => 'John Doe'
         response.should == nil
-        response = authenticated.person(id).put :name => 'Foo' # cleanup
-      end
+        authenticated.person(id).get['results'][0]['name'].should == 'John Doe'
 
-      it 'should delete an item' do
         response = authenticated.person(id).delete
         response.should == {}
-        authenticated.person.post :name => 'Foo' # cleanup
+        expect {authenticated.person(id).get}.to raise_error(PopIt::Error, '{"error":"page not found"}')
       end
     end
   end
