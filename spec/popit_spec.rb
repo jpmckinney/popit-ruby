@@ -91,7 +91,7 @@ describe PopIt do
 
         response = authenticated.person(id).put :name => 'John Doe'
         response.should == nil
-        authenticated.person(id).get['results'][0]['name'].should == 'John Doe'
+        authenticated.person(id).get['result']['name'].should == 'John Doe'
 
         response = authenticated.person(id).delete
         response.should == {}
