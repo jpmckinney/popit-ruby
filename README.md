@@ -105,13 +105,12 @@ api.person.get 'foo' # raises PopIt::Error with {"error":"page not found"}
 
 ## Running Tests
 
-To run the tests, create a `spec_auth.yml` file in the `spec` directory with the contents:
+To run the tests:
 
-```yml
-instance_name: YOUR_TEST_INSTANCE
-user: YOUR_USERNAME
-password: YOUR_PASSWORD
-```
+    export INSTANCE_NAME=YOUR_POPIT_INSTANCE_NAME
+    export POPIT_USER=YOUR_POPIT_EMAIL_ADDRESS
+    export POPIT_PASSWORD=YOUR_POPIT_PASSWORD
+    bundle exec rake
 
 **If you care about the data in an instance, do not use that instance to run tests!**
 
