@@ -6,22 +6,11 @@ rvm:
 - 1.9.3
 - 2.0.0
 - ree
-
 env:
   global:
-    - TRAVIS_SECURE_ENV_VARS: true 
-    - secure: ! 'Y983QmQxhpVgD8Y9ETiq/MjvIbCC1lkEoN0ouMcgzGHnEpX89ZvRyWqUY9UL
+  - TRAVIS_SECURE_ENV_VARS: true
+  - secure: ! 'Q1wjuxr364WRXFTDD8jdunJG59Xl2iYFtehm+5d6UAR9mY9Ohv4TLqT6QhHu
 
-        iUS5TD9EsV74SasoqLWFnNfH1GwIwROhaXBHENrEvSV3oHOe8kKoBeUn/RDn
+      1mdR575m90w3y1ZuS3NnzoUiMcrL+Osoza/tzBOch0+doXMqCXyZcgnSlNgV
 
-        TI/iDfw6G4bhkCbvFbaNa/EGboduiX6fO9BW5mDS2IUbKgthT5I='
-    - secure: ! 'QzTGJn8FpMnvu2cXVXGdWvOvrkyl+N3xJBl6YBri0EJ3QBafRmkgk3FrjtQp
-
-        5HjEUBlRuk5SXj4GHZUDEo7q+TwZZHw7KgozTXqqe5RY1Q2Z+7WWlGHTp+gO
-
-        VE7FThCQPSQ65fn4BQuT0fSaJyLtK8JS+AkkKPDlWb0VKEabfmQ='
-    - secure: ! 'BiKZ0fu581Pe9tP87DMC190icZGtBQiNWmCxNIjsGDdkqpqns46tqStr4lTx
-
-        PqPdr9CnVoiuKHb8q1ZFsC/8SstbVh/MugYBMOP90VL8dT2bcSnFjKGHBgUy
-
-        P2ka/cjBYyg9GwNoHnPQGew67wYNJ43wPwpyRFvl1b49qz2VCBw='
+      16TcY+GFYbBnGnlq+5UoBCjOb3eqHdWqoASdT4DPIijGmvEzBDs='

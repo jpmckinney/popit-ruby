@@ -11,10 +11,10 @@ describe PopIt do
   end
 
   let :authenticated do
-    PopIt.new ({
-      :instance_name => ENV['INSTANCE_NAME'],
-      :user => ENV['USER'],
-      :password => ENV['PASSWORD'],
+    PopIt.new({
+      :instance_name => ENV['INSTANCE_NAME'] || 'tttest',
+      :user          => ENV['POPIT_USER'] || 'james@opennorth.ca',
+      :password      => ENV['POPIT_PASSWORD'],
     })
   end
 
@@ -53,7 +53,6 @@ describe PopIt do
       end
 
       it 'should get one item by name' do
-        authenticated.person.post :name => 'Foo'
         response = unauthenticated.person.get :name => 'Foo'
         results = response['results']
         results.should be_an(Array)
@@ -104,6 +103,7 @@ describe PopIt do
       it 'should delete an item' do
         response = authenticated.person(id).delete
         response.should == {}
+        authenticated.person.post :name => 'Foo' # cleanup
       end
     end
   end
