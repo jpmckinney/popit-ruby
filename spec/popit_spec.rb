@@ -29,16 +29,12 @@ describe PopIt do
   end
 
   context 'with a PopIt instance' do
-    before :all do
-      @person = unauthenticated.person.get(:name => 'Foo', :slug => 'foo')['results'][0]
-    end
-
     let :person do
-      @person
+      unauthenticated.person.get(:name => 'Foo', :slug => 'foo')['results'][0]
     end
 
     let :id do
-      @person['_id']
+      person['_id']
     end
 
     it 'should fail to send a request to a bad schema' do
@@ -98,6 +94,7 @@ describe PopIt do
       it 'should update an item' do
         response = authenticated.person(id).put :name => 'John Smith'
         response.should == nil
+        response = authenticated.person(id).put :name => 'Foo' # cleanup
       end
 
       it 'should delete an item' do
