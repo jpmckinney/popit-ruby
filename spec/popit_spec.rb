@@ -20,82 +20,79 @@ describe PopIt do
 
   it 'should fail to send a request to a bad instance' do
     api = PopIt.new :instance_name => '47cc67093475061e3d95369d'
-    expect { api.person.get }.to raise_error(PopIt::Error, '404')
+    expect { api.persons.get }.to raise_error(PopIt::PageNotFound, '404')
   end
 
   it 'should fail to send a request to a bad version' do
     api = PopIt.new :instance_name => 'tttest', :version => 'v0'
-    expect { api.person.get }.to raise_error(PopIt::Error, '{"error":"page not found"}')
+    expect { api.persons.get }.to raise_error(PopIt::PageNotFound, 'page not found')
   end
 
   context 'with a PopIt instance' do
     let :person do
-      unauthenticated.person.get(:name => 'Foo', :slug => 'foo')['results'][0]
+      unauthenticated.persons.get(:name => 'Foo', :slug => 'foo')[0]
     end
 
     let :id do
-      person['_id']
+      person['id']
     end
 
     it 'should fail to send a request to a bad schema' do
-      expect { unauthenticated.foo.get }.to raise_error(PopIt::Error, '{"error":"page not found"}')
+      expect { unauthenticated.foo.get }.to raise_error(PopIt::PageNotFound, "collection 'foo' not found")
     end
 
     context 'when unauthenticated' do
       it 'should get all items' do
-        response = unauthenticated.person.get
-        results = response['results']
-        results.should be_an(Array)
+        response = unauthenticated.persons.get
+        response.should be_an(Array)
       end
 
       it 'should get one item by name' do
-        response = unauthenticated.person.get :name => 'Foo'
-        results = response['results']
-        results.should be_an(Array)
+        response = unauthenticated.persons.get :name => 'Foo'
+        response.should be_an(Array)
       end
 
       it 'should get one item' do
-        response = unauthenticated.person(id).get
-        result = response['result']
+        response = unauthenticated.persons(id).get
         # PopIt adds fields e.g. __v, _internal, contact_details, images, links,
         # other_names, personal_details and adds positions_api_url to meta.
         person.each do |k,v|
           unless k == 'meta'
-            result[k].should == v
+            response[k].should == v
           end
         end
       end
 
       it 'should fail to get a non-existent item' do
-        expect {unauthenticated.person('bar').get}.to raise_error(PopIt::Error, '{"error":"page not found"}')
+        expect {unauthenticated.persons('bar').get}.to raise_error(PopIt::PageNotFound, "id 'bar' not found")
       end
 
       it 'should fail to create an item' do
-        expect {unauthenticated.person.post :name => 'John Doe', :slug => 'john-doe'}.to raise_error(PopIt::Error, %({"error":"not authenticated"}))
+        expect {unauthenticated.persons.post :name => 'John Doe', :slug => 'john-doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
 
       it 'should fail to update an item' do
-        expect {unauthenticated.person(id).put :name => 'Jane Doe'}.to raise_error(PopIt::Error, %({"error":"not authenticated"}))
+        expect {unauthenticated.persons(id).put :name => 'Jane Doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
 
       it 'should fail to delete an item' do
-        expect {unauthenticated.person(id).delete}.to raise_error(PopIt::Error, %({"error":"not authenticated"}))
+        expect {unauthenticated.persons(id).delete}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
     end
 
     context 'when authenticated' do
       it 'should create, update and delete an item' do
-        response = authenticated.person.post :name => 'John Smith'
-        id = response['result']['_id']
-        response['result']['name'].should == 'John Smith'
+        response = authenticated.persons.post :name => 'John Smith'
+        id = response['id']
+        response['name'].should == 'John Smith'
 
-        response = authenticated.person(id).put :name => 'John Doe'
+        response = authenticated.persons(id).put :id => id, :name => 'John Doe'
         response.should == nil
-        authenticated.person(id).get['result']['name'].should == 'John Doe'
+        authenticated.persons(id).get['name'].should == 'John Doe'
 
-        response = authenticated.person(id).delete
+        response = authenticated.persons(id).delete
         response.should == {}
-        expect {authenticated.person(id).get}.to raise_error(PopIt::Error, '{"error":"page not found"}')
+        expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, 'page not found')
       end
     end
   end

@@ -1,6 +1,6 @@
 # The PopIt API Ruby Gem
 
-A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows you to create, read, update and delete items from PopIt.
+A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows you to create, read, update and delete documents from PopIt.
 
 [![Build Status](https://secure.travis-ci.org/opennorth/popit-ruby.png)](http://travis-ci.org/opennorth/popit-ruby)
 [![Dependency Status](https://gemnasium.com/opennorth/popit-ruby.png)](https://gemnasium.com/opennorth/popit-ruby)
@@ -30,11 +30,11 @@ You can pass these options to `PopIt.new`:
 * `:instance_name` the PopIt instance, usually the first part of the domain name
 * `:host_name` the PopIt API's host name – defaults to "popit.mysociety.org"
 * `:port` the PopIt API's port – defaults to 80
-* `:version` the PopIt API version – defaults to "v1"
+* `:version` the PopIt API version – defaults to "v0.1"
 * `:user` a user name – if blank, the API will be read-only
 * `:password` the user's password
 
-For brevity, we only show examples below for `person` items, but you can use the same code to operate on organisations and positions by substituting `organisation` or `position` for `person`.
+For brevity, we only show examples below for `persons` documents, but you can use the same code to operate on organizations and memberships by substituting `organizations` or `memberships` for `persons`.
 
 More documentation at [RubyDoc.info](http://rdoc.info/gems/popit/PopIt).
 
@@ -43,42 +43,38 @@ More documentation at [RubyDoc.info](http://rdoc.info/gems/popit/PopIt).
 Get all people:
 
 ```ruby
-response = api.person.get
-p response['results']
+api.persons.get
 ```
 
 Get one person:
 
 ```ruby
-response = api.person('47cc67093475061e3d95369d').get
-p response['result']
+api.persons('47cc67093475061e3d95369d').get
 ```
 
 You can also search for...
 
 * people by slug, name or summary
-* organisations by slug or name
-* positions by title, person or organisation
+* organizations by slug or name
+* memberships by title, person or organization
 
 For example:
 
 ```ruby
-response = api.person.get :name => 'John Doe'
-p response['results']
+api.person.get :name => 'John Doe'
 ```
 
 ### Create
 
 ```ruby
 response = api.person.post :name => 'John Doe'
-id = response['result']['_id']
+id = response['id']
 ```
 
 ### Update
 
 ```ruby
-response = api.person(id).put :name => 'Jane Doe'
-p response['result']
+api.person(id).put :id => id, :name => 'Jane Doe'
 ```
 
 ### Delete
@@ -89,18 +85,14 @@ success = api.person(id).delete
 
 ## Error Handling
 
-If you attempt to:
+You will raise a `PopIt::PageNotFound` exception if you attempt to access an instance, API version, collection or document that doesn't exist. You will raise a `PopIt::NotAuthenticated` exception if you attempt to create, update or delete a document without authenticating. In other error cases, you will raise a generic `PopIt::Error` exception.
 
-* read an item that doesn't exist
-* create, update or delete an item without authenticating
-* operate on something other than people, organisations and positions
-
-you will raise a `PopIt::Error` exception. The exception's message will be the same as from the PopIt API.
+The exception's message will be the same as from the PopIt API.
 
 ```ruby
 require 'popit'
 api = PopIt.new :instance_name => 'demo'
-api.person.get 'foo' # raises PopIt::Error with {"error":"page not found"}
+api.person.get 'foo' # raises PopIt::PageNotFound with "page not found"
 ```
 
 ## Running Tests

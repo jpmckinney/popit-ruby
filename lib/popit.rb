@@ -8,11 +8,11 @@ require 'yajl'
 #
 #     require 'popit'
 #     api = PopIt.new :instance_name => 'demo'
-#     api.get 'person/john-doe'
+#     api.get 'persons/john-doe'
 #
 # can be written as:
 #
-#     api.person('john-doe').get
+#     api.persons('john-doe').get
 #
 # All methods and arguments between `api` and the HTTP method - in this case,
 # `get` - become parts of the path.
@@ -20,6 +20,8 @@ require 'yajl'
 # @see https://github.com/mysociety/popit/blob/master/lib/apps/api/api_v1.js
 class PopIt
   class Error < StandardError; end
+  class PageNotFound < Error; end
+  class NotAuthenticated < Error; end
 
   include HTTParty
 
@@ -29,7 +31,7 @@ class PopIt
   attr_reader :host_name
   # The PopIt API's port, eg 80
   attr_reader :port
-  # The PopIt API version, eg "v1"
+  # The PopIt API version, eg "v0.1"
   attr_reader :version
   # A user name.
   attr_reader :username
@@ -52,8 +54,8 @@ class PopIt
 
     @instance_name = opts[:instance_name]
     @host_name     = opts[:host_name] || 'popit.mysociety.org'
-    @port          = opts[:port]
-    @version       = opts[:version]   || 'v1'
+    @port          = opts[:port]      || 80
+    @version       = opts[:version]   || 'v0.1'
     @username      = opts[:user]
     @password      = opts[:password]
   end
@@ -109,15 +111,22 @@ private
     end
 
     unless ['200', '201', '204'].include? response.response.code
-      message = if response.response.content_type == 'text/html'
-        response.response.code
+      if response.response.content_type == 'text/html'
+        message = response.response.code
       else
-        response.response.body
+        message = response.parsed_response['error'] || response.parsed_response['errors'].join(', ')
       end
-      raise PopIt::Error, message
+      case response.response.code
+      when '404'
+        raise PopIt::PageNotFound, message
+      when '401'
+        raise PopIt::NotAuthenticated, message
+      else
+        raise PopIt::Error, message
+      end
     end
 
-    response.parsed_response
+    response.parsed_response['result']
   end
 
   def method_missing(*args)
