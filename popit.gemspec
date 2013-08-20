@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.homepage    = "http://github.com/opennorth/popit-ruby"
   s.summary     = %q{The PopIt API Ruby Gem}
   s.description = %q{A Ruby wrapper for the PopIt API}
+  s.license     = 'MIT'
 
   s.files         = `git ls-files`.split("\n")
   s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
