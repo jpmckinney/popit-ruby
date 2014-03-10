@@ -1,5 +1,4 @@
 require 'httparty'
-require 'yajl'
 
 # A Ruby wrapper for the PopIt API.
 #
@@ -110,7 +109,7 @@ private
       self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :body => opts
     end
 
-    unless ['200', '201', '204'].include? response.response.code
+    unless ['200', '201', '204'].include?(response.response.code)
       if response.response.content_type == 'text/html'
         message = response.response.code
       else
@@ -126,7 +125,7 @@ private
       end
     end
 
-    response.parsed_response['result']
+    response.parsed_response && response.parsed_response['result']
   end
 
   def method_missing(*args)

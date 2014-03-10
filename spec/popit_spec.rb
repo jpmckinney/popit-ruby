@@ -72,7 +72,7 @@ describe PopIt do
       end
 
       it 'should fail to update an item' do
-        expect {unauthenticated.persons(id).put :name => 'Jane Doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons(id).put :id => id, :name => 'John Doe', :slug => 'john-doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
 
       it 'should fail to delete an item' do
@@ -82,17 +82,28 @@ describe PopIt do
 
     context 'when authenticated' do
       it 'should create, update and delete an item' do
-        response = authenticated.persons.post :name => 'John Smith'
+        response = authenticated.persons.post :name => 'John Smith', :slug => 'john-smith'
         id = response['id']
         response['name'].should == 'John Smith'
 
-        response = authenticated.persons(id).put :id => id, :name => 'John Doe'
-        response.should == nil
+        response = authenticated.persons(id).put :id => id, :name => 'John Doe', :slug => 'john-doe'
+        response.should == {
+          'id'              => id,
+          'name'            => 'John Doe',
+          'slug'            => 'john-doe',
+          'memberships'     => [],
+          'links'           => [],
+          'contact_details' => [],
+          'identifiers'     => [],
+          'other_names'     => [],
+          'url'             => 'http://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
+          'html_url'        => 'http://tttest.popit.mysociety.org/persons/john-doe',
+        }
         authenticated.persons(id).get['name'].should == 'John Doe'
 
         response = authenticated.persons(id).delete
-        response.should == {}
-        expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, 'page not found')
+        response.should == nil
+        expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, "id '#{id}' not found")
       end
     end
   end
