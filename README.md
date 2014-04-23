@@ -52,29 +52,25 @@ Get one person:
 api.persons('47cc67093475061e3d95369d').get
 ```
 
-You can also search for...
+### Search
 
-* people by slug, name or summary
-* organizations by slug or name
-* memberships by title, person or organization
-
-For example:
+Read the [PopIt API documentation](http://popit.mysociety.org/docs/api/search) for details.
 
 ```ruby
-api.person.get :name => 'John Doe'
+api.search.persons.get(:name => 'John Doe')
 ```
 
 ### Create
 
 ```ruby
-response = api.person.post :name => 'John Doe'
+response = api.person.post(:name => 'John Doe')
 id = response['id']
 ```
 
 ### Update
 
 ```ruby
-api.person(id).put :id => id, :name => 'Jane Doe'
+api.person(id).put(:id => id, :name => 'Jane Doe')
 ```
 
 ### Delete
