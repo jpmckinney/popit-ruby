@@ -1,3 +1,5 @@
+require 'json'
+
 require 'httparty'
 
 # A Ruby wrapper for the PopIt API.
@@ -106,7 +108,7 @@ private
     when :delete
       self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :query => opts
     when :post, :put
-      self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :body => opts
+      self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :body => JSON.dump(opts), :headers => {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
     end
 
     unless ['200', '201', '204'].include?(response.response.code)
