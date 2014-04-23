@@ -82,8 +82,9 @@ describe PopIt do
 
     context 'when authenticated' do
       it 'should create, update and delete an item' do
-        response = authenticated.persons.post :name => 'John Smith', :slug => 'john-smith'
+        response = authenticated.persons.post :name => 'John Smith', :slug => 'john-smith', :contact_details => [{:type => 'email', :value => 'test@example.com'}]
         id = response['id']
+        contact_detail_id = response['contact_details'][0]['id']
         response['name'].should == 'John Smith'
 
         response = authenticated.persons(id).put :id => id, :name => 'John Doe', :slug => 'john-doe'
@@ -93,7 +94,11 @@ describe PopIt do
           'slug'            => 'john-doe',
           'memberships'     => [],
           'links'           => [],
-          'contact_details' => [],
+          'contact_details' => [{
+            'id'    => contact_detail_id,
+            'type'  => 'email',
+            'value' => 'test@example.com',
+          }],
           'identifiers'     => [],
           'other_names'     => [],
           'url'             => 'http://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
