@@ -57,7 +57,7 @@ api.persons('47cc67093475061e3d95369d').get
 Read the [PopIt API documentation](http://popit.mysociety.org/docs/api/search) for details.
 
 ```ruby
-api.search.persons.get(:name => 'John Doe')
+api.search.persons.get(:q => 'name:"John Doe"')
 ```
 
 ### Create
