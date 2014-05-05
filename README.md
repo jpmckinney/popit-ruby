@@ -63,20 +63,20 @@ api.search.persons.get(:q => 'name:"John Doe"')
 ### Create
 
 ```ruby
-response = api.person.post(:name => 'John Doe')
+response = api.persons.post(:name => 'John Doe')
 id = response['id']
 ```
 
 ### Update
 
 ```ruby
-api.person(id).put(:id => id, :name => 'Jane Doe')
+api.persons(id).put(:id => id, :name => 'Jane Doe')
 ```
 
 ### Delete
 
 ```ruby
-success = api.person(id).delete
+success = api.persons(id).delete
 ```
 
 ## Error Handling
@@ -87,8 +87,8 @@ The exception's message will be the same as from the PopIt API.
 
 ```ruby
 require 'popit'
-api = PopIt.new :instance_name => 'demo'
-api.person.get 'foo' # raises PopIt::PageNotFound with "page not found"
+api = PopIt.new(:instance_name => 'demo')
+api.persons.get('foo') # raises PopIt::PageNotFound with "page not found"
 ```
 
 ## Running Tests
