@@ -22,7 +22,7 @@ require 'popit'
 Then, create an API client for PopIt:
 
 ```ruby
-api = PopIt.new :instance_name => 'demo'
+api = PopIt.new(:instance_name => 'demo')
 ```
 
 You can pass these options to `PopIt.new`:
@@ -40,10 +40,22 @@ More documentation at [RubyDoc.info](http://rdoc.info/gems/popit/PopIt).
 
 ### Read
 
-Get all people:
+Get one page of people (default 30 per page):
 
 ```ruby
 api.persons.get
+```
+
+Get a different number of people per page (maximum 100 per page):
+
+```ruby
+api.persons.get(:per_page => 100)
+```
+
+Get another page of people:
+
+```ruby
+api.persons.get(:page => 2)
 ```
 
 Get one person:
