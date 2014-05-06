@@ -102,7 +102,7 @@ describe PopIt do
           'identifiers'     => [],
           'other_names'     => [],
           'url'             => 'http://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
-          'html_url'        => 'http://tttest.popit.mysociety.org/persons/john-doe',
+          'html_url'        => 'http://tttest.popit.mysociety.org/persons/' + id,
         }
         authenticated.persons(id).get['name'].should == 'John Doe'
 
