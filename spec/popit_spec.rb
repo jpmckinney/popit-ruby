@@ -20,7 +20,7 @@ describe PopIt do
 
   it 'should fail to send a request to a bad instance' do
     api = PopIt.new :instance_name => '47cc67093475061e3d95369d'
-    expect { api.persons.get }.to raise_error(PopIt::PageNotFound, '404')
+    expect { api.persons.get }.to raise_error(PopIt::PageNotFound)
   end
 
   it 'should fail to send a request to a bad version' do

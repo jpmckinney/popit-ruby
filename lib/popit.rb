@@ -22,6 +22,7 @@ require 'httparty'
 class PopIt
   class Error < StandardError; end
   class PageNotFound < Error; end
+  class ServiceUnavailable < Error; end
   class NotAuthenticated < Error; end
 
   include HTTParty
@@ -112,16 +113,21 @@ private
     end
 
     unless ['200', '201', '204'].include?(response.response.code)
-      message = if response.response.content_type == 'text/html'
-        "HTTP #{response.response.code}"
-      elsif response.parsed_response['error']
-        response.parsed_response['error']
-      elsif response.parsed_response['errors']
-        response.parsed_response['errors'].join(', ')
+      message = if Hash === response.parsed_response
+        if response.parsed_response['error']
+          response.parsed_response['error']
+        elsif response.parsed_response['errors']
+          response.parsed_response['errors'].join(', ')
+        else
+          response.parsed_response
+        end
       else
         response.parsed_response
       end
+
       case response.response.code
+      when '503'
+        raise PopIt::ServiceUnavailable, message
       when '404'
         raise PopIt::PageNotFound, message
       when '401'
