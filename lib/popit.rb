@@ -112,10 +112,14 @@ private
     end
 
     unless ['200', '201', '204'].include?(response.response.code)
-      if response.response.content_type == 'text/html'
-        message = response.response.code
+      message = if response.response.content_type == 'text/html'
+        "HTTP #{response.response.code}"
+      elsif response.parsed_response['error']
+        response.parsed_response['error']
+      elsif response.parsed_response['errors']
+        response.parsed_response['errors'].join(', ')
       else
-        message = response.parsed_response['error'] || response.parsed_response['errors'].join(', ')
+        response.parsed_response
       end
       case response.response.code
       when '404'
