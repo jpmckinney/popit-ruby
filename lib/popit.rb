@@ -49,7 +49,7 @@ class PopIt
   # @option opts [String] :user a user name
   # @option opts [String] :password the user's password
   def initialize(opts = {})
-    unless opts.has_key? :instance_name
+    unless opts.has_key?(:instance_name)
       raise ArgumentError, 'Missing key :instance_name'
     end
 
@@ -67,7 +67,7 @@ class PopIt
   # @param [Hash] opts key-value pairs for the query string
   # @return the JSON response from the server
   def get(path, opts = {})
-    request :get, path, opts
+    request(:get, path, opts)
   end
 
   # Sends a POST request.
@@ -76,7 +76,7 @@ class PopIt
   # @param [Hash] opts key-value pairs for the message body
   # @return the JSON response from the server
   def post(path, opts = {})
-    request :post, path, opts
+    request(:post, path, opts)
   end
 
   # Sends a PUT request.
@@ -85,7 +85,7 @@ class PopIt
   # @param [Hash] opts key-value pairs for the message body
   # @return [nil] nothing
   def put(path, opts = {})
-    request :put, path, opts
+    request(:put, path, opts)
   end
 
   # Sends a DELETE request.
@@ -94,7 +94,7 @@ class PopIt
   # @param [Hash] opts key-value pairs for the query string
   # @return [Hash] an empty hash
   def delete(path, opts = {})
-    request :delete, path, opts
+    request(:delete, path, opts)
   end
 
 private
@@ -104,11 +104,11 @@ private
 
     response = case http_method
     when :get
-      self.class.send http_method, path, :query => opts
+      self.class.send(http_method, path, :query => opts)
     when :delete
-      self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :query => opts
+      self.class.send(http_method, path, :basic_auth => {:username => username, :password => password}, :query => opts)
     when :post, :put
-      self.class.send http_method, path, :basic_auth => {:username => username, :password => password}, :body => JSON.dump(opts), :headers => {'Content-Type' => 'application/json', 'Accept' => 'application/json'}
+      self.class.send(http_method, path, :basic_auth => {:username => username, :password => password}, :body => JSON.dump(opts), :headers => {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
     end
 
     unless ['200', '201', '204'].include?(response.response.code)
@@ -143,19 +143,19 @@ private
     end
 
     def get(opts = {})
-      @klass.get chain.join('/'), opts
+      @klass.get(chain.join('/'), opts)
     end
 
     def post(opts = {})
-      @klass.post chain.join('/'), opts
+      @klass.post(chain.join('/'), opts)
     end
 
     def put(opts = {})
-      @klass.put chain.join('/'), opts
+      @klass.put(chain.join('/'), opts)
     end
 
     def delete(opts = {})
-      @klass.delete chain.join('/'), opts
+      @klass.delete(chain.join('/'), opts)
     end
 
     def method_missing(*args)
