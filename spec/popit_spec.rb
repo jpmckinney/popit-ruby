@@ -7,7 +7,7 @@ require 'yaml'
 # @see https://github.com/mysociety/popit/blob/master/lib/apps/api/api_v1.js
 describe PopIt do
   let :unauthenticated do
-    PopIt.new :instance_name => 'tttest'
+    PopIt.new(:instance_name => 'tttest')
   end
 
   let :authenticated do
@@ -18,13 +18,17 @@ describe PopIt do
     })
   end
 
+  let :exponential_backoff do
+    PopIt.new(:instance_name => 'tttest', :max_retries => 2)
+  end
+
   it 'should fail to send a request to a bad instance' do
-    api = PopIt.new :instance_name => '47cc67093475061e3d95369d'
+    api = PopIt.new(:instance_name => '47cc67093475061e3d95369d')
     expect { api.persons.get }.to raise_error(PopIt::PageNotFound)
   end
 
   it 'should fail to send a request to a bad version' do
-    api = PopIt.new :instance_name => 'tttest', :version => 'v0'
+    api = PopIt.new(:instance_name => 'tttest', :version => 'v0')
     expect { api.persons.get }.to raise_error(PopIt::PageNotFound, 'page not found')
   end
 
@@ -48,7 +52,7 @@ describe PopIt do
       end
 
       it 'should get one item by name' do
-        response = unauthenticated.persons.get :name => 'Foo'
+        response = unauthenticated.persons.get(:name => 'Foo')
         response.should be_an(Array)
       end
 
@@ -68,11 +72,11 @@ describe PopIt do
       end
 
       it 'should fail to create an item' do
-        expect {unauthenticated.persons.post :name => 'John Doe', :slug => 'john-doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons.post(:name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
 
       it 'should fail to update an item' do
-        expect {unauthenticated.persons(id).put :id => id, :name => 'John Doe', :slug => 'john-doe'}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
       end
 
       it 'should fail to delete an item' do
@@ -82,12 +86,12 @@ describe PopIt do
 
     context 'when authenticated' do
       it 'should create, update and delete an item' do
-        response = authenticated.persons.post :name => 'John Smith', :slug => 'john-smith', :contact_details => [{:type => 'email', :value => 'test@example.com'}]
+        response = authenticated.persons.post(:name => 'John Smith', :slug => 'john-smith', :contact_details => [{:type => 'email', :value => 'test@example.com'}])
         id = response['id']
         contact_detail_id = response['contact_details'][0]['id']
         response['name'].should == 'John Smith'
 
-        response = authenticated.persons(id).put :id => id, :name => 'John Doe', :slug => 'john-doe'
+        response = authenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')
         response.should == {
           'id'              => id,
           'name'            => 'John Doe',
@@ -109,6 +113,28 @@ describe PopIt do
         response = authenticated.persons(id).delete
         response.should == nil
         expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, "id '#{id}' not found")
+      end
+    end
+
+    context 'when service unavailable' do
+      before :each do
+        PopIt.stub(:get) do
+          response = Net::HTTPServiceUnavailable.new('1.1', 503, 'Service Unavailable')
+          response.stub(:body => '', :code => '503')
+          HTTParty::Response.new(HTTParty::Request.new(Net::HTTP::Get, '/'), response, lambda {})
+        end
+      end
+
+      it 'should fail immediately' do
+        time = Time.now
+        expect {unauthenticated.persons.get}.to raise_error(PopIt::ServiceUnavailable)
+        Time.now.should be_within(1).of(time)
+      end
+
+      it 'should backoff exponentially' do
+        time = Time.now
+        expect {exponential_backoff.persons.get}.to raise_error(PopIt::ServiceUnavailable)
+        Time.now.should_not be_within(5).of(time)
       end
     end
   end

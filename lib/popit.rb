@@ -39,6 +39,8 @@ class PopIt
   attr_reader :username
   # The user's password.
   attr_reader :password
+  # The maximum number of retries in case of HTTP 503 Service Unavailable errors.
+  attr_reader :max_retries
 
   # Initializes a PopIt API client.
   #
@@ -49,17 +51,21 @@ class PopIt
   # @option opts [String] :version the PopIt API version, eg "v1"
   # @option opts [String] :user a user name
   # @option opts [String] :password the user's password
+  # @option opts [String] :max_retries the maximum number of retries in case of
+  #  HTTP 503 Service Unavailable errors
   def initialize(opts = {})
     unless opts.has_key?(:instance_name)
       raise ArgumentError, 'Missing key :instance_name'
     end
 
     @instance_name = opts[:instance_name]
-    @host_name     = opts[:host_name] || 'popit.mysociety.org'
-    @port          = opts[:port]      || 80
-    @version       = opts[:version]   || 'v0.1'
+    @host_name     = opts[:host_name]   || 'popit.mysociety.org'
+    @port          = opts[:port]        || 80
+    @version       = opts[:version]     || 'v0.1'
     @username      = opts[:user]
     @password      = opts[:password]
+    @max_retries   = opts[:max_retries] || 0
+
   end
 
   # Sends a GET request.
@@ -101,6 +107,8 @@ class PopIt
 private
 
   def request(http_method, path, opts = {})
+    attempts ||= 0
+
     path = "http://#{instance_name}.#{host_name}:#{port}/api/#{version}/#{path}"
 
     response = case http_method
@@ -138,6 +146,14 @@ private
     end
 
     response.parsed_response && response.parsed_response['result']
+  rescue PopIt::ServiceUnavailable
+    attempts += 1
+    if attempts <= max_retries
+      sleep attempts ** 2
+      retry
+    else
+      raise
+    end
   end
 
   def method_missing(*args)
