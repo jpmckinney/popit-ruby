@@ -33,6 +33,7 @@ You can pass these options to `PopIt.new`:
 * `:version` the PopIt API version – defaults to "v0.1"
 * `:user` a user name – if blank, the API will be read-only
 * `:password` the user's password
+* `:max_retries` the number of times to retry the API in case of errors - defaults to 0
 
 For brevity, we only show examples below for `persons` documents, but you can use the same code to operate on organizations and memberships by substituting `organizations` or `memberships` for `persons`.
 
