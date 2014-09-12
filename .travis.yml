@@ -1,14 +1,9 @@
 language: ruby
 rvm:
-  - 1.9.2
-  - 1.9.3
-  - 2.0.0
-  - 2.1.0
+- 1.9.2
+- 1.9.3
+- 2.0.0
+- 2.1.0
 env:
   global:
-  - TRAVIS_SECURE_ENV_VARS: true
-  - secure: ! 'Q1wjuxr364WRXFTDD8jdunJG59Xl2iYFtehm+5d6UAR9mY9Ohv4TLqT6QhHu
-
-      1mdR575m90w3y1ZuS3NnzoUiMcrL+Osoza/tzBOch0+doXMqCXyZcgnSlNgV
-
-      16TcY+GFYbBnGnlq+5UoBCjOb3eqHdWqoASdT4DPIijGmvEzBDs='
+    secure: OYhs6gJoC2eZr4H3uH9X1R36rxIj6ISiK8QO+tdhSxRyUZsKA94iYEqUsvb9jtyE+5NYlsWx/0SQdUQsRS06CIdph1tHKXxzAz8e8/nZaUoQMlg2z7ba09ah57Catlt6ouRaxa++BXbwKfRsmG8aYhSDy8bUEwa9VSi1glE65aY=

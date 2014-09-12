@@ -35,10 +35,8 @@ class PopIt
   attr_reader :port
   # The PopIt API version, eg "v0.1"
   attr_reader :version
-  # A user name.
-  attr_reader :username
-  # The user's password.
-  attr_reader :password
+  # An API key.
+  attr_reader :apikey
   # The maximum number of retries in case of HTTP 503 Service Unavailable errors.
   attr_reader :max_retries
 
@@ -49,8 +47,7 @@ class PopIt
   # @option opts [String] :host_name the PopIt API's host name, eg "popit.mysociety.org"
   # @option opts [String] :post the PopIt API's port, eg 80
   # @option opts [String] :version the PopIt API version, eg "v1"
-  # @option opts [String] :user a user name
-  # @option opts [String] :password the user's password
+  # @option opts [String] :apikey an API key
   # @option opts [String] :max_retries the maximum number of retries in case of
   #  HTTP 503 Service Unavailable errors
   def initialize(opts = {})
@@ -62,8 +59,7 @@ class PopIt
     @host_name     = opts[:host_name]   || 'popit.mysociety.org'
     @port          = opts[:port]        || 80
     @version       = opts[:version]     || 'v0.1'
-    @username      = opts[:user]
-    @password      = opts[:password]
+    @apikey        = opts[:apikey]
     @max_retries   = opts[:max_retries] || 0
 
   end
@@ -115,9 +111,9 @@ private
     when :get
       self.class.send(http_method, path, :query => opts)
     when :delete
-      self.class.send(http_method, path, :basic_auth => {:username => username, :password => password}, :query => opts)
+      self.class.send(http_method, path, :query => opts.merge(:apikey => apikey))
     when :post, :put
-      self.class.send(http_method, path, :basic_auth => {:username => username, :password => password}, :body => JSON.dump(opts), :headers => {'Content-Type' => 'application/json', 'Accept' => 'application/json'})
+      self.class.send(http_method, path, :body => JSON.dump(opts.merge(:apikey => apikey)), :headers => {'Content-Type' => 'application/json'})
     end
 
     unless ['200', '201', '204'].include?(response.response.code)

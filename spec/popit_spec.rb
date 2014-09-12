@@ -13,8 +13,7 @@ describe PopIt do
   let :authenticated do
     PopIt.new({
       :instance_name => ENV['INSTANCE_NAME'] || 'tttest',
-      :user          => ENV['POPIT_USER'] || 'james@opennorth.ca',
-      :password      => ENV['POPIT_PASSWORD'],
+      :apikey        => ENV['POPIT_API_KEY'],
     })
   end
 
@@ -48,12 +47,12 @@ describe PopIt do
     context 'when unauthenticated' do
       it 'should get all items' do
         response = unauthenticated.persons.get
-        response.should be_an(Array)
+        expect(response).to be_an(Array)
       end
 
       it 'should get one item by name' do
         response = unauthenticated.persons.get(:name => 'Foo')
-        response.should be_an(Array)
+        expect(response).to be_an(Array)
       end
 
       it 'should get one item' do
@@ -62,7 +61,7 @@ describe PopIt do
         # other_names, personal_details and adds positions_api_url to meta.
         person.each do |k,v|
           unless k == 'meta'
-            response[k].should == v
+            expect(response[k]).to eq(v)
           end
         end
       end
@@ -72,15 +71,15 @@ describe PopIt do
       end
 
       it 'should fail to create an item' do
-        expect {unauthenticated.persons.post(:name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons.post(:name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
       end
 
       it 'should fail to update an item' do
-        expect {unauthenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
       end
 
       it 'should fail to delete an item' do
-        expect {unauthenticated.persons(id).delete}.to raise_error(PopIt::NotAuthenticated, 'not authenticated')
+        expect {unauthenticated.persons(id).delete}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
       end
     end
 
@@ -89,10 +88,10 @@ describe PopIt do
         response = authenticated.persons.post(:name => 'John Smith', :slug => 'john-smith', :contact_details => [{:type => 'email', :value => 'test@example.com'}])
         id = response['id']
         contact_detail_id = response['contact_details'][0]['id']
-        response['name'].should == 'John Smith'
+        expect(response['name']).to eq('John Smith')
 
         response = authenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')
-        response.should == {
+        expect(response).to eq({
           'id'              => id,
           'name'            => 'John Doe',
           'slug'            => 'john-doe',
@@ -107,20 +106,20 @@ describe PopIt do
           'other_names'     => [],
           'url'             => 'http://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
           'html_url'        => 'http://tttest.popit.mysociety.org/persons/' + id,
-        }
-        authenticated.persons(id).get['name'].should == 'John Doe'
+        })
+        expect(authenticated.persons(id).get['name']).to eq('John Doe')
 
         response = authenticated.persons(id).delete
-        response.should == nil
+        expect(response).to be_nil
         expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, "id '#{id}' not found")
       end
     end
 
     context 'when service unavailable' do
       before :each do
-        PopIt.stub(:get) do
+        allow(PopIt).to receive(:get) do
           response = Net::HTTPServiceUnavailable.new('1.1', 503, 'Service Unavailable')
-          response.stub(:body => '', :code => '503')
+          allow(response).to receive_messages(:body => '', :code => '503')
           HTTParty::Response.new(HTTParty::Request.new(Net::HTTP::Get, '/'), response, lambda {})
         end
       end
@@ -128,13 +127,13 @@ describe PopIt do
       it 'should fail immediately' do
         time = Time.now
         expect {unauthenticated.persons.get}.to raise_error(PopIt::ServiceUnavailable)
-        Time.now.should be_within(1).of(time)
+        expect(Time.now).to be_within(1).of(time)
       end
 
       it 'should backoff exponentially' do
         time = Time.now
         expect {exponential_backoff.persons.get}.to raise_error(PopIt::ServiceUnavailable)
-        Time.now.should_not be_within(5).of(time)
+        expect(Time.now).to_not be_within(5).of(time)
       end
     end
   end

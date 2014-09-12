@@ -32,8 +32,7 @@ You can pass these options to `PopIt.new`:
 * `:host_name` the PopIt API's host name – defaults to "popit.mysociety.org"
 * `:port` the PopIt API's port – defaults to 80
 * `:version` the PopIt API version – defaults to "v0.1"
-* `:user` a user name – if blank, the API will be read-only
-* `:password` the user's password
+* `:apikey` an API key – if blank, the API will be read-only
 * `:max_retries` the number of times to retry the API in case of errors - defaults to 0
 
 For brevity, we only show examples below for `persons` documents, but you can use the same code to operate on organizations and memberships by substituting `organizations` or `memberships` for `persons`.
@@ -110,8 +109,7 @@ api.persons.get('foo') # raises PopIt::PageNotFound with "page not found"
 To run the tests:
 
     export INSTANCE_NAME=YOUR_POPIT_INSTANCE_NAME
-    export POPIT_USER=YOUR_POPIT_EMAIL_ADDRESS
-    export POPIT_PASSWORD=YOUR_POPIT_PASSWORD
+    export POPIT_API_KEY=YOUR_POPIT_API_KEY
     bundle exec rake
 
 **If you care about the data in an instance, do not use that instance to run tests!**
