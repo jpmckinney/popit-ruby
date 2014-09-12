@@ -2,6 +2,7 @@
 
 A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows you to create, read, update and delete documents from PopIt.
 
+[![Gem Version](https://badge.fury.io/rb/popit.svg)](http://badge.fury.io/rb/popit)
 [![Build Status](https://secure.travis-ci.org/opennorth/popit-ruby.png)](http://travis-ci.org/opennorth/popit-ruby)
 [![Dependency Status](https://gemnasium.com/opennorth/popit-ruby.png)](https://gemnasium.com/opennorth/popit-ruby)
 [![Coverage Status](https://coveralls.io/repos/opennorth/popit-ruby/badge.png?branch=master)](https://coveralls.io/r/opennorth/popit-ruby)
