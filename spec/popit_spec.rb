@@ -71,15 +71,15 @@ describe PopIt do
       end
 
       it 'should fail to create an item' do
-        expect {unauthenticated.persons.post(:name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
+        expect {unauthenticated.persons.post(:name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated)
       end
 
       it 'should fail to update an item' do
-        expect {unauthenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
+        expect {unauthenticated.persons(id).put(:id => id, :name => 'John Doe', :slug => 'john-doe')}.to raise_error(PopIt::NotAuthenticated)
       end
 
       it 'should fail to delete an item' do
-        expect {unauthenticated.persons(id).delete}.to raise_error(PopIt::NotAuthenticated, 'Unauthorized')
+        expect {unauthenticated.persons(id).delete}.to raise_error(PopIt::NotAuthenticated)
       end
     end
 

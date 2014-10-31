@@ -131,11 +131,11 @@ private
 
       case response.response.code
       when '503'
-        raise PopIt::ServiceUnavailable, message
+        raise PopIt::ServiceUnavailable
       when '404'
         raise PopIt::PageNotFound, message
       when '401'
-        raise PopIt::NotAuthenticated, message
+        raise PopIt::NotAuthenticated  # returns an HTML page
       else
         raise PopIt::Error, message
       end
