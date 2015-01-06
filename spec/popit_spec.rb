@@ -111,6 +111,7 @@ describe PopIt do
 
         response = authenticated.persons(id).delete
         expect(response).to be_nil
+        sleep 5 # doesn't get deleted right away
         expect {authenticated.persons(id).get}.to raise_error(PopIt::PageNotFound, "id '#{id}' not found")
       end
     end
