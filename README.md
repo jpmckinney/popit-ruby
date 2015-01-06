@@ -3,10 +3,10 @@
 A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows you to create, read, update and delete documents from PopIt.
 
 [![Gem Version](https://badge.fury.io/rb/popit.svg)](http://badge.fury.io/rb/popit)
-[![Build Status](https://secure.travis-ci.org/opennorth/popit-ruby.png)](http://travis-ci.org/opennorth/popit-ruby)
-[![Dependency Status](https://gemnasium.com/opennorth/popit-ruby.png)](https://gemnasium.com/opennorth/popit-ruby)
-[![Coverage Status](https://coveralls.io/repos/opennorth/popit-ruby/badge.png?branch=master)](https://coveralls.io/r/opennorth/popit-ruby)
-[![Code Climate](https://codeclimate.com/github/opennorth/popit-ruby.png)](https://codeclimate.com/github/opennorth/popit-ruby)
+[![Build Status](https://secure.travis-ci.org/jpmckinney/popit-ruby.png)](http://travis-ci.org/jpmckinney/popit-ruby)
+[![Dependency Status](https://gemnasium.com/jpmckinney/popit-ruby.png)](https://gemnasium.com/jpmckinney/popit-ruby)
+[![Coverage Status](https://coveralls.io/repos/jpmckinney/popit-ruby/badge.png?branch=master)](https://coveralls.io/r/jpmckinney/popit-ruby)
+[![Code Climate](https://codeclimate.com/github/jpmckinney/popit-ruby.png)](https://codeclimate.com/github/jpmckinney/popit-ruby)
 
 ## Installation
 
@@ -114,8 +114,4 @@ To run the tests:
 
 **If you care about the data in an instance, do not use that instance to run tests!**
 
-## Bugs? Questions?
-
-This gem's main repository is on GitHub: [http://github.com/opennorth/popit-ruby](http://github.com/opennorth/popit-ruby), where your contributions, forks, bug reports, feature requests, and feedback are greatly welcomed.
-
-Copyright (c) 2011 Open North Inc., released under the MIT license
+Copyright (c) 2011 James McKinney, released under the MIT license

@@ -5,9 +5,8 @@ Gem::Specification.new do |s|
   s.name        = "popit"
   s.version     = PopIt::VERSION
   s.platform    = Gem::Platform::RUBY
-  s.authors     = ["Open North"]
-  s.email       = ["info@opennorth.ca"]
-  s.homepage    = "http://github.com/opennorth/popit-ruby"
+  s.authors     = ["James McKinney"]
+  s.homepage    = "http://github.com/jpmckinney/popit-ruby"
   s.summary     = %q{The PopIt API Ruby Gem}
   s.description = %q{A Ruby wrapper for the PopIt API}
   s.license     = 'MIT'
@@ -18,6 +17,7 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   s.add_runtime_dependency('httparty', '~> 0.10.0')
+
   s.add_development_dependency('rspec', '~> 3.1.0')
   s.add_development_dependency('rake')
   s.add_development_dependency('coveralls')
