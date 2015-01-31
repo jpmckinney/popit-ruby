@@ -31,7 +31,7 @@ class PopIt
   attr_reader :instance_name
   # The PopIt API's host name, eg "popit.mysociety.org".
   attr_reader :host_name
-  # The PopIt API's port, eg 80
+  # The PopIt API's port, eg 443
   attr_reader :port
   # The PopIt API version, eg "v0.1"
   attr_reader :version
@@ -45,7 +45,7 @@ class PopIt
   # @param [Hash] opts the API client's configuration
   # @option opts [String] :instance_name the instance name
   # @option opts [String] :host_name the PopIt API's host name, eg "popit.mysociety.org"
-  # @option opts [String] :post the PopIt API's port, eg 80
+  # @option opts [String] :post the PopIt API's port, eg 443
   # @option opts [String] :version the PopIt API version, eg "v1"
   # @option opts [String] :apikey an API key
   # @option opts [String] :max_retries the maximum number of retries in case of
@@ -57,7 +57,7 @@ class PopIt
 
     @instance_name = opts[:instance_name]
     @host_name     = opts[:host_name]   || 'popit.mysociety.org'
-    @port          = opts[:port]        || 80
+    @port          = opts[:port]        || 443
     @version       = opts[:version]     || 'v0.1'
     @apikey        = opts[:apikey]
     @max_retries   = opts[:max_retries] || 0
