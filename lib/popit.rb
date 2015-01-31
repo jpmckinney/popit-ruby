@@ -105,7 +105,7 @@ private
   def request(http_method, path, opts = {})
     attempts ||= 0
 
-    path = "http://#{instance_name}.#{host_name}:#{port}/api/#{version}/#{path}"
+    path = "https://#{instance_name}.#{host_name}:#{port}/api/#{version}/#{path}"
 
     response = case http_method
     when :get

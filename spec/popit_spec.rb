@@ -104,8 +104,8 @@ describe PopIt do
           }],
           'identifiers'     => [],
           'other_names'     => [],
-          'url'             => 'http://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
-          'html_url'        => 'http://tttest.popit.mysociety.org/persons/' + id,
+          'url'             => 'https://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
+          'html_url'        => 'https://tttest.popit.mysociety.org/persons/' + id,
         })
         expect(authenticated.persons(id).get['name']).to eq('John Doe')
 

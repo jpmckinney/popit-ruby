@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version     = PopIt::VERSION
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["James McKinney"]
-  s.homepage    = "http://github.com/jpmckinney/popit-ruby"
+  s.homepage    = "https://github.com/jpmckinney/popit-ruby"
   s.summary     = %q{The PopIt API Ruby Gem}
   s.description = %q{A Ruby wrapper for the PopIt API}
   s.license     = 'MIT'

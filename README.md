@@ -1,9 +1,9 @@
 # The PopIt API Ruby Gem
 
-A Ruby wrapper for the [PopIt](http://popit.mysociety.org/) API, which allows you to create, read, update and delete documents from PopIt.
+A Ruby wrapper for the [PopIt](http://popit.poplus.org/) API, which allows you to create, read, update and delete documents from PopIt.
 
-[![Gem Version](https://badge.fury.io/rb/popit.svg)](http://badge.fury.io/rb/popit)
-[![Build Status](https://secure.travis-ci.org/jpmckinney/popit-ruby.png)](http://travis-ci.org/jpmckinney/popit-ruby)
+[![Gem Version](https://badge.fury.io/rb/popit.svg)](https://badge.fury.io/rb/popit)
+[![Build Status](https://secure.travis-ci.org/jpmckinney/popit-ruby.png)](https://travis-ci.org/jpmckinney/popit-ruby)
 [![Dependency Status](https://gemnasium.com/jpmckinney/popit-ruby.png)](https://gemnasium.com/jpmckinney/popit-ruby)
 [![Coverage Status](https://coveralls.io/repos/jpmckinney/popit-ruby/badge.png)](https://coveralls.io/r/jpmckinney/popit-ruby)
 [![Code Climate](https://codeclimate.com/github/jpmckinney/popit-ruby.png)](https://codeclimate.com/github/jpmckinney/popit-ruby)
@@ -67,7 +67,7 @@ api.persons('47cc67093475061e3d95369d').get
 
 ### Search
 
-Read the [PopIt API documentation](http://popit.mysociety.org/docs/api/search) for details.
+Read the [PopIt API documentation](http://popit.poplus.org/docs/api/reference/) for details.
 
 ```ruby
 api.search.persons.get(:q => 'name:"John Doe"')
