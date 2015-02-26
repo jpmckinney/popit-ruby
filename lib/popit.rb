@@ -145,7 +145,7 @@ private
   rescue PopIt::ServiceUnavailable
     attempts += 1
     if attempts <= max_retries
-      sleep attempts ** 2
+      sleep 2 ** attempts
       retry
     else
       raise
