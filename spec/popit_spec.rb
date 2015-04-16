@@ -98,11 +98,12 @@ describe PopIt do
           'memberships'     => [],
           'links'           => [],
           'contact_details' => [{
-            'id'    => contact_detail_id,
             'type'  => 'email',
             'value' => 'test@example.com',
+            'id'    => contact_detail_id,
           }],
           'identifiers'     => [],
+          'images'          => [],
           'other_names'     => [],
           'url'             => 'https://tttest.popit.mysociety.org/api/v0.1/persons/' + id,
           'html_url'        => 'https://tttest.popit.mysociety.org/persons/' + id,
