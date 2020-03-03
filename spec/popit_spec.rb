@@ -5,7 +5,8 @@ require 'yaml'
 # We don't want to test the PopIt API. We want to check that the wrapper works.
 #
 # @see https://github.com/mysociety/popit/blob/master/lib/apps/api/api_v1.js
-describe PopIt do
+# popit.mysociety.org is disabled.
+xdescribe PopIt do
   let :unauthenticated do
     PopIt.new(:instance_name => 'tttest')
   end
